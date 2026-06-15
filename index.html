@@ -15,7 +15,7 @@
 
   <!-- FORM -->
   <div id="formBox">
-    <h3 class="text-center mb-4">Register V2</h3>
+    <h3 class="text-center mb-4">Register V3</h3>
 
     <form id="registerForm" class="card p-4 shadow-sm">
 
@@ -78,6 +78,11 @@
 
 </div>
 
+  <div id="alreadyUsedBox" style="display:none; text-align:center;">
+  <h4>Bu deneyime daha önce katıldınız.</h4>
+  <p>İlginiz için teşekkür ederiz.</p>
+</div>
+
 <script>
   // ================= SUPABASE =================
   const SUPABASE_URL = "https://hulrbtowgzmwiohevzby.supabase.co";
@@ -93,6 +98,13 @@
   const formBox = document.getElementById("formBox");
   const loadingBox = document.getElementById("loadingBox");
   const doneBox = document.getElementById("doneBox");
+
+  const alreadyUsedBox = document.getElementById("alreadyUsedBox");
+
+if (localStorage.getItem("machine_used") === "true") {
+  formBox.style.display = "none";
+  alreadyUsedBox.style.display = "block";
+}
 
   let currentJobId = null;
   let interval = null;
@@ -146,6 +158,10 @@
       .single();
 
     currentJobId = job.id;
+
+    if (email.toLowerCase() !== "demo@demo.com") {
+    localStorage.setItem("machine_used", "true");
+    }
 
     // polling başlat
     interval = setInterval(checkJobStatus, 2000);
